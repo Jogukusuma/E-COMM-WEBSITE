@@ -77,6 +77,12 @@
       "description": "People working on laptops at night",
       "imageUrl": "https://storage.googleapis.com/project-spark-347416-cms-public/cms/a2e1a3842c1b48b19114092b774b1c3e.png",
       "imageHint": "people computers night"
+    },
+    {
+      "id": "hexagon-background",
+      "description": "Abstract background with a hexagon pattern",
+      "imageUrl": "https://storage.googleapis.com/project-spark-347416-cms-public/cms/f7a1f592a88a44dca042784860161474.png",
+      "imageHint": "hexagon abstract"
     }
   ]
 }

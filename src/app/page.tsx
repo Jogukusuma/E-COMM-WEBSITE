@@ -7,17 +7,17 @@ import { PlaceHolderImages } from "@/lib/placeholder-images";
 
 export default function Home() {
   const featuredProducts = products.slice(0, 4);
-  const heroImage = PlaceHolderImages.find(p => p.id === 'collaborative-night');
+  const heroImage = PlaceHolderImages.find(p => p.id === 'hexagon-background');
 
   return (
     <>
       <section className="relative h-[80vh] min-h-[600px] flex items-center justify-center text-center text-white">
         <Image
-          src={heroImage?.imageUrl || "https://storage.googleapis.com/project-spark-347416-cms-public/cms/a2e1a3842c1b48b19114092b774b1c3e.png"}
-          alt="People working on laptops at night"
+          src={heroImage?.imageUrl || "https://storage.googleapis.com/project-spark-347416-cms-public/cms/f7a1f592a88a44dca042784860161474.png"}
+          alt="Abstract background with a hexagon pattern"
           fill
           className="object-cover -z-10"
-          data-ai-hint={heroImage?.imageHint || 'people computers night'}
+          data-ai-hint={heroImage?.imageHint || 'hexagon abstract'}
           priority
         />
         <div className="absolute inset-0 bg-black/70 -z-10" />
