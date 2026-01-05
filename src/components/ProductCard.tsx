@@ -34,7 +34,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
   return (
     <Link href={`/product/${product.id}`} className="group block">
-      <Card className="flex h-full flex-col overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+      <Card className="flex h-full flex-col overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-lg dark:hover:shadow-primary/20">
         <CardHeader className="p-0">
           <div className="relative h-48 w-full overflow-hidden">
             <Image
@@ -51,7 +51,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <CardDescription className="line-clamp-2 text-sm">{product.description}</CardDescription>
         </CardContent>
         <CardFooter className="flex items-center justify-between p-4 pt-0">
-          <p className="text-lg font-bold text-foreground">₹{Math.floor(product.price)}</p>
+          <p className="text-lg font-bold text-foreground">₹{product.price}</p>
           <Button size="sm" onClick={handleAddToCart}>
             <ShoppingCart className="mr-2 h-4 w-4" />
             Add to Cart
