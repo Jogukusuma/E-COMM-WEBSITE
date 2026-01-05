@@ -11,7 +11,7 @@
     --card-foreground: 222 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222 84% 4.9%;
-    --primary: 9 71% 65%;
+    --primary: 343 71% 73%;
     --primary-foreground: 222 84% 4.9%;
     --secondary: 217 33% 17%;
     --secondary-foreground: 210 40% 98%;
@@ -23,7 +23,7 @@
     --destructive-foreground: 210 40% 98%;
     --border: 217 33% 17%;
     --input: 217 33% 17%;
-    --ring: 9 71% 65%;
+    --ring: 343 71% 73%;
     --radius: 0.5rem;
     --chart-1: 221 83% 53%;
     --chart-2: 217 33% 17%;
@@ -39,7 +39,7 @@
     --card-foreground: 210 40% 98%;
     --popover: 222 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 9 71% 65%;
+    --primary: 343 71% 73%;
     --primary-foreground: 222 84% 4.9%;
     --secondary: 217 33% 17%;
     --secondary-foreground: 210 40% 98%;
@@ -51,7 +51,7 @@
     --destructive-foreground: 210 40% 98%;
     --border: 217 33% 17%;
     --input: 217 33% 17%;
-    --ring: 9 71% 65%;
+    --ring: 343 71% 73%;
     --chart-1: 217 91% 60%;
     --chart-2: 217 33% 17%;
     --chart-3: 180 4% 39%;
@@ -66,5 +66,15 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  @keyframes twinkle {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+  }
+  .animate-twinkle {
+    animation: twinkle 3s ease-in-out infinite;
   }
 }

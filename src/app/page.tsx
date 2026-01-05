@@ -5,6 +5,7 @@ import Link from "next/link";
 import React from 'react';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { ShinyDots } from "@/components/ShinyDots";
 
 const categories = [
   { name: 'Laptops', icon: <Laptop className="h-10 w-10 mx-auto mb-4" />, href: '/products?category=Laptops' },
@@ -19,7 +20,7 @@ export default function Home() {
   
   return (
     <>
-      <section className="relative h-[80vh] min-h-[600px] flex items-center justify-center text-center bg-background">
+      <section className="relative h-[80vh] min-h-[600px] flex items-center justify-center text-center bg-background overflow-hidden">
         {heroImage && (
           <Image
             src={heroImage.imageUrl}
@@ -31,6 +32,7 @@ export default function Home() {
           />
         )}
         <div className="absolute inset-0 bg-black/60 -z-10" />
+        <ShinyDots />
         <div className="container mx-auto px-4">
           <h1 className="mb-4 text-5xl md:text-7xl font-bold tracking-tight text-foreground drop-shadow-lg">
             SriComputers
