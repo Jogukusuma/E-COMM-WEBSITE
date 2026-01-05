@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useCart } from "@/hooks/use-cart";
@@ -6,12 +7,20 @@ import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import Image from "next/image";
 import Link from "next/link";
-import { X, ShoppingBag } from "lucide-react";
+import { X, ShoppingBag, Loader2 } from "lucide-react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
 export default function CartPage() {
-  const { cartItems, removeFromCart, updateQuantity, cartTotal, cartCount } = useCart();
+  const { cartItems, removeFromCart, updateQuantity, cartTotal, cartCount, isCartLoading } = useCart();
+
+  if (isCartLoading) {
+     return (
+      <div className="container mx-auto px-4 py-8 flex justify-center items-center h-[60vh]">
+        <Loader2 className="h-16 w-16 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">

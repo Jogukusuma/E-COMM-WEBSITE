@@ -1,8 +1,12 @@
+
 "use client"
 
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import type { CartItem, Product } from '@/lib/types';
 import { useToast } from "@/hooks/use-toast"
+import { useCollection, useFirebase } from '@/firebase';
+import { collection, deleteDoc, doc, setDoc, writeBatch } from 'firebase/firestore';
+import { useMemoFirebase } from '@/firebase/provider';
 
 interface CartContextType {
   cartItems: CartItem[];
@@ -12,67 +16,140 @@ interface CartContextType {
   clearCart: () => void;
   cartTotal: number;
   cartCount: number;
+  isCartLoading: boolean;
 }
 
 export const CartContext = createContext<CartContextType | undefined>(undefined);
 
+const LOCAL_STORAGE_KEY = 'sri-cart';
+
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const { toast } = useToast()
+  const { user, firestore } = useFirebase();
+  const { toast } = useToast();
 
+  const [localCart, setLocalCart] = useState<CartItem[]>([]);
+  const [isCartLoading, setIsCartLoading] = useState(true);
+
+  // Firestore cart for logged-in users
+  const userCartCollection = useMemoFirebase(() => {
+    if (!firestore || !user) return null;
+    return collection(firestore, 'users', user.uid, 'cartItems');
+  }, [firestore, user]);
+
+  const { data: firestoreCart, isLoading: isFirestoreCartLoading } = useCollection<CartItem>(userCartCollection);
+
+  // Load local cart from localStorage on initial render
   useEffect(() => {
-    const storedCart = localStorage.getItem('sri-cart');
+    const storedCart = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (storedCart) {
-      setCartItems(JSON.parse(storedCart));
+      setLocalCart(JSON.parse(storedCart));
     }
+    setIsCartLoading(false); // Initial local cart load is done
   }, []);
-
+  
+  // Sync local cart to firestore on login
   useEffect(() => {
-    localStorage.setItem('sri-cart', JSON.stringify(cartItems));
-  }, [cartItems]);
-
-  const addToCart = (product: Product, quantity = 1) => {
-    setCartItems(prevItems => {
-      const existingItem = prevItems.find(item => item.id === product.id);
-      if (existingItem) {
-        return prevItems.map(item =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
+    const syncCartOnLogin = async () => {
+      if (user && firestore && localCart.length > 0) {
+        const batch = writeBatch(firestore);
+        localCart.forEach(item => {
+          const docRef = doc(firestore, 'users', user.uid, 'cartItems', item.id);
+          batch.set(docRef, item);
+        });
+        await batch.commit();
+        // Clear local cart after syncing
+        localStorage.removeItem(LOCAL_STORAGE_KEY);
+        setLocalCart([]);
       }
-      return [...prevItems, { id: product.id, name: product.name, price: product.price, image: product.image, quantity }];
-    });
+    };
+    syncCartOnLogin();
+  }, [user, firestore, localCart]);
+
+
+  const cartItems = user ? (firestoreCart || []) : localCart;
+  
+  const addToCart = useCallback(async (product: Product, quantity = 1) => {
+    const existingItem = cartItems.find(item => item.id === product.id);
+    const newQuantity = existingItem ? existingItem.quantity + quantity : quantity;
+    const cartItem: CartItem = { 
+      id: product.id, 
+      name: product.name, 
+      price: product.price, 
+      image: product.image, 
+      quantity: newQuantity
+    };
+
+    if (user && firestore) {
+      const docRef = doc(firestore, 'users', user.uid, 'cartItems', product.id);
+      await setDoc(docRef, cartItem, { merge: true });
+    } else {
+      let updatedCart: CartItem[];
+      if (existingItem) {
+        updatedCart = localCart.map(item =>
+          item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item
+        );
+      } else {
+        updatedCart = [...localCart, cartItem];
+      }
+      setLocalCart(updatedCart);
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedCart));
+    }
+    
     toast({
         title: "Added to Cart",
         description: `${product.name} has been added to your cart.`,
     })
-  };
+  }, [cartItems, firestore, localCart, toast, user]);
 
-  const removeFromCart = (productId: string) => {
-    setCartItems(prevItems => prevItems.filter(item => item.id !== productId));
-     toast({
-        title: "Removed from Cart",
-        description: `Item has been removed from your cart.`,
-        variant: 'destructive'
-    })
-  };
-
-  const updateQuantity = (productId: string, quantity: number) => {
-    if (quantity <= 0) {
-      removeFromCart(productId);
+  const removeFromCart = useCallback(async (productId: string) => {
+    if (user && firestore) {
+      const docRef = doc(firestore, 'users', user.uid, 'cartItems', productId);
+      await deleteDoc(docRef);
     } else {
-      setCartItems(prevItems =>
-        prevItems.map(item =>
-          item.id === productId ? { ...item, quantity } : item
-        )
-      );
+      const updatedCart = localCart.filter(item => item.id !== productId);
+      setLocalCart(updatedCart);
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedCart));
     }
-  };
+    toast({
+      title: "Removed from Cart",
+      description: `Item has been removed from your cart.`,
+      variant: 'destructive'
+    });
+  }, [firestore, localCart, toast, user]);
 
-  const clearCart = () => {
-    setCartItems([]);
-  };
+
+  const updateQuantity = useCallback(async (productId: string, quantity: number) => {
+    if (quantity <= 0) {
+      await removeFromCart(productId);
+      return;
+    }
+
+    if (user && firestore) {
+      const docRef = doc(firestore, 'users', user.uid, 'cartItems', productId);
+      await setDoc(docRef, { quantity }, { merge: true });
+    } else {
+       const updatedCart = localCart.map(item =>
+          item.id === productId ? { ...item, quantity } : item
+        );
+      setLocalCart(updatedCart);
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedCart));
+    }
+  }, [firestore, localCart, removeFromCart, user]);
+
+
+  const clearCart = useCallback(async () => {
+    if (user && firestore && firestoreCart) {
+      const batch = writeBatch(firestore);
+      firestoreCart.forEach(item => {
+        const docRef = doc(firestore, 'users', user.uid, 'cartItems', item.id);
+        batch.delete(docRef);
+      });
+      await batch.commit();
+    } else {
+      setLocalCart([]);
+      localStorage.removeItem(LOCAL_STORAGE_KEY);
+    }
+  }, [user, firestore, firestoreCart]);
 
   const cartTotal = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
@@ -83,6 +160,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     (count, item) => count + item.quantity,
     0
   );
+  
+  const isLoading = user ? isFirestoreCartLoading : isCartLoading;
 
   return (
     <CartContext.Provider
@@ -94,6 +173,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         clearCart,
         cartTotal,
         cartCount,
+        isCartLoading: isLoading
       }}
     >
       {children}
