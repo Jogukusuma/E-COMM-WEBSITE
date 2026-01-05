@@ -44,7 +44,7 @@ export default function ProductPage({ params }: ProductPageProps) {
           <p className="mb-4 text-lg text-muted-foreground">{product.category}</p>
           <p className="mb-6 text-base leading-relaxed">{product.description}</p>
           <div className="flex items-center justify-between">
-            <p className="text-4xl font-extrabold text-primary">₹{product.price.toFixed(2)}</p>
+            <p className="text-4xl font-extrabold text-primary">₹{Math.floor(product.price)}</p>
             <AddToCartButton product={product} />
           </div>
         </div>

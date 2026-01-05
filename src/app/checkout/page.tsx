@@ -88,13 +88,13 @@ export default function CheckoutPage() {
                         <p className="text-sm text-muted-foreground">Qty: {item.quantity}</p>
                       </div>
                     </div>
-                    <p>₹{(item.price * item.quantity).toFixed(2)}</p>
+                    <p>₹{Math.floor(item.price * item.quantity)}</p>
                   </div>
                 ))}
                 <Separator />
                 <div className="flex justify-between font-bold text-lg">
                   <p>Total</p>
-                  <p>₹{cartTotal.toFixed(2)}</p>
+                  <p>₹{Math.floor(cartTotal)}</p>
                 </div>
               </div>
             </CardContent>
@@ -147,7 +147,7 @@ export default function CheckoutPage() {
               </Card>
 
               <Button type="submit" className="w-full" size="lg">
-                Pay ₹{cartTotal.toFixed(2)}
+                Pay ₹{Math.floor(cartTotal)}
               </Button>
             </form>
           </Form>

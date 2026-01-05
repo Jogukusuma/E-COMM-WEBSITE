@@ -71,7 +71,7 @@ export default function AccountPage() {
                     <TableRow key={order.id}>
                       <TableCell className="font-medium">{order.id}</TableCell>
                       <TableCell>{order.date}</TableCell>
-                      <TableCell>₹{order.total.toFixed(2)}</TableCell>
+                      <TableCell>₹{Math.floor(order.total)}</TableCell>
                       <TableCell>
                         <Badge variant={order.status === 'Delivered' ? 'default' : 'secondary'} className={order.status === 'Delivered' ? 'bg-green-600' : ''}>{order.status}</Badge>
                       </TableCell>
