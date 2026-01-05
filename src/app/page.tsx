@@ -7,30 +7,26 @@ import { PlaceHolderImages } from "@/lib/placeholder-images";
 
 export default function Home() {
   const featuredProducts = products.slice(0, 4);
-  const heroImage = PlaceHolderImages.find(p => p.id === 'hexagon-background');
 
   return (
     <>
-      <section className="relative h-[80vh] min-h-[600px] flex items-center justify-center text-center text-white">
-        <Image
-          src={heroImage?.imageUrl || "https://storage.googleapis.com/project-spark-347416-cms-public/cms/f7a1f592a88a44dca042784860161474.png"}
-          alt="Abstract background with a hexagon pattern"
-          fill
-          className="object-cover -z-10"
-          data-ai-hint={heroImage?.imageHint || 'hexagon abstract'}
-          priority
-        />
-        <div className="absolute inset-0 bg-background/70 -z-10" />
+      <section className="relative h-[80vh] min-h-[600px] flex items-center justify-center text-center bg-background">
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background -z-10" />
         <div className="container mx-auto px-4">
           <h1 className="mb-4 text-5xl md:text-7xl font-bold tracking-tight text-foreground drop-shadow-lg">
-            Find Your Next Rig
+            Secure & Intuitive Trading
           </h1>
           <p className="mb-8 text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto drop-shadow-md">
             The best components for high-performance computing.
           </p>
-          <Button asChild size="lg">
-            <Link href="#featured-products">Explore Products</Link>
-          </Button>
+          <div className="flex justify-center gap-4">
+            <Button asChild size="lg">
+              <Link href="#featured-products">Get Started</Link>
+            </Button>
+            <Button asChild size="lg" variant="outline">
+              <Link href="#featured-products">Start Trading</Link>
+            </Button>
+          </div>
         </div>
       </section>
 
