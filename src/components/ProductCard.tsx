@@ -51,7 +51,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <CardDescription className="line-clamp-2 text-sm">{product.description}</CardDescription>
         </CardContent>
         <CardFooter className="flex items-center justify-between p-4 pt-0">
-          <p className="text-lg font-bold text-foreground">₹{product.price}</p>
+          <p className="text-lg font-bold text-foreground">₹{Math.floor(product.price)}</p>
           <Button size="sm" onClick={handleAddToCart}>
             <ShoppingCart className="mr-2 h-4 w-4" />
             Add to Cart
