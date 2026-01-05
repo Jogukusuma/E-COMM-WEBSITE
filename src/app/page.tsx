@@ -11,7 +11,7 @@ export default function Home() {
             SriComputers
           </h1>
           <p className="mb-8 text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto drop-shadow-md">
-            The best components for high-performance computing.
+            cloudy mist
           </p>
           <div className="flex justify-center gap-4">
             <Button asChild size="lg">
