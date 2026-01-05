@@ -3,31 +3,33 @@ import { ProductCard } from "@/components/ProductCard";
 import { products } from "@/lib/products";
 import Image from "next/image";
 import Link from "next/link";
+import { PlaceHolderImages } from "@/lib/placeholder-images";
 
 export default function Home() {
   const featuredProducts = products.slice(0, 4);
+  const heroImage = PlaceHolderImages.find(p => p.id === 'collaborative-night');
 
   return (
     <>
-      <section className="relative h-[60vh] min-h-[500px] flex items-center justify-center text-center text-white">
+      <section className="relative h-[80vh] min-h-[600px] flex items-center justify-center text-center text-white">
         <Image
-          src="https://storage.googleapis.com/project-spark-347416-cms-public/cms/02b28929e083403a958a0a8f8883d6a6.png"
-          alt="Serene clouds over mountains"
+          src={heroImage?.imageUrl || "https://storage.googleapis.com/project-spark-347416-cms-public/cms/a2e1a3842c1b48b19114092b774b1c3e.png"}
+          alt="People working on laptops at night"
           fill
           className="object-cover -z-10"
-          data-ai-hint="clouds mountains"
+          data-ai-hint={heroImage?.imageHint || 'people computers night'}
           priority
         />
-        <div className="absolute inset-0 bg-black/30 -z-10" />
+        <div className="absolute inset-0 bg-black/70 -z-10" />
         <div className="container mx-auto px-4">
-          <h1 className="mb-4 text-5xl md:text-7xl font-bold tracking-tight font-calligraphy text-primary-foreground drop-shadow-lg">
-            Welcome to SriComputers
+          <h1 className="mb-4 text-6xl md:text-8xl font-bold tracking-tight text-white drop-shadow-lg">
+            Sri Computers
           </h1>
-          <p className="mb-8 text-lg md:text-xl text-primary-foreground/90 max-w-3xl mx-auto drop-shadow-md">
-            Your ultimate destination for cutting-edge computers, components, and accessories.
+          <p className="mb-8 text-lg md:text-xl text-neutral-300 max-w-3xl mx-auto drop-shadow-md">
+            Powering Your Passion. Building Your Dreams.
           </p>
           <Button asChild size="lg">
-            <Link href="#featured-products">Shop Now</Link>
+            <Link href="#featured-products">Explore Products</Link>
           </Button>
         </div>
       </section>

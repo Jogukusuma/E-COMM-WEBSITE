@@ -71,6 +71,12 @@
       "description": "MacBook Pro M4",
       "imageUrl": "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxhcHBsZSUyMGxhcHRvcHxlbnwwfHx8fDE3Njc2MDYyNzB8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "apple laptop"
+    },
+    {
+      "id": "collaborative-night",
+      "description": "People working on laptops at night",
+      "imageUrl": "https://storage.googleapis.com/project-spark-347416-cms-public/cms/a2e1a3842c1b48b19114092b774b1c3e.png",
+      "imageHint": "people computers night"
     }
   ]
 }
