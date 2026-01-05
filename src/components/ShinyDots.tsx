@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from 'react';
 
 export function ShinyDots() {
-  const [dots, setDots] = useState<
+  const [stars, setStars] = useState<
     {
       top: string;
       left: string;
@@ -15,35 +15,37 @@ export function ShinyDots() {
   >([]);
 
   useEffect(() => {
-    const generateDots = () => {
-      const newDots = Array.from({ length: 50 }).map(() => ({
+    const generateStars = () => {
+      const newStars = Array.from({ length: 50 }).map(() => ({
         top: `${Math.random() * 100}%`,
         left: `${Math.random() * 100}%`,
         size: Math.random() * 2 + 1,
         delay: Math.random() * 5,
         duration: Math.random() * 5 + 3,
       }));
-      setDots(newDots);
+      setStars(newStars);
     };
 
-    generateDots();
+    generateStars();
   }, []);
 
   return (
     <div className="absolute inset-0 -z-10 overflow-hidden">
-      {dots.map((dot, i) => (
+      {stars.map((star, i) => (
         <span
           key={i}
-          className="absolute rounded-full bg-white/50 animate-twinkle"
+          className="absolute text-white/80 animate-twinkle"
           style={{
-            top: dot.top,
-            left: dot.left,
-            width: `${dot.size}px`,
-            height: `${dot.size}px`,
-            animationDelay: `${dot.delay}s`,
-            animationDuration: `${dot.duration}s`,
+            top: star.top,
+            left: star.left,
+            fontSize: `${star.size * 10}px`,
+            lineHeight: '1',
+            animationDelay: `${star.delay}s`,
+            animationDuration: `${star.duration}s`,
           }}
-        />
+        >
+          &#9733;
+        </span>
       ))}
     </div>
   );
