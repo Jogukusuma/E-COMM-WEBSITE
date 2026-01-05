@@ -34,7 +34,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-black/60 -z-10" />
         <ShinyDots />
         <div className="container mx-auto px-4">
-          <h1 className="mb-4 text-5xl md:text-7xl font-bold tracking-tight text-foreground drop-shadow-lg">
+          <h1 className="mb-4 text-5xl md:text-7xl font-calligraphy font-semibold tracking-tight text-foreground drop-shadow-lg">
             SriComputers
           </h1>
           <p className="mb-8 text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto drop-shadow-md">
