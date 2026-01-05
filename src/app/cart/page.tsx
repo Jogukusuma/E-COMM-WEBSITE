@@ -56,7 +56,7 @@ export default function CartPage() {
                           <Image src={item.image} alt={item.name} width={64} height={64} className="rounded-md object-cover" />
                         </TableCell>
                         <TableCell className="font-medium">
-                          <Link href={`/product/${item.id}`} className="hover:underline">{item.name}</Link>
+                          <Link href={`/product/${item.productId}`} className="hover:underline">{item.name}</Link>
                         </TableCell>
                         <TableCell>
                           <div className="flex justify-center">
@@ -64,14 +64,14 @@ export default function CartPage() {
                               type="number"
                               min="1"
                               value={item.quantity}
-                              onChange={(e) => updateQuantity(item.id, parseInt(e.target.value))}
+                              onChange={(e) => updateQuantity(item.productId, parseInt(e.target.value))}
                               className="w-20 text-center"
                             />
                           </div>
                         </TableCell>
                         <TableCell className="text-right">₹{Math.floor(item.price * item.quantity)}</TableCell>
                         <TableCell>
-                          <Button variant="ghost" size="icon" onClick={() => removeFromCart(item.id)}>
+                          <Button variant="ghost" size="icon" onClick={() => removeFromCart(item.productId)}>
                             <X className="h-4 w-4" />
                           </Button>
                         </TableCell>

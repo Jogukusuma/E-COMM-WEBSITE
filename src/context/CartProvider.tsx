@@ -54,7 +54,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         const batch = writeBatch(firestore);
         localCart.forEach(item => {
           const docRef = doc(firestore, 'users', user.uid, 'cartItems', item.id);
-          batch.set(docRef, item);
+          const itemWithUser = { ...item, userId: user.uid, productId: item.id };
+          batch.set(docRef, itemWithUser);
         });
         await batch.commit();
         // Clear local cart after syncing
@@ -69,24 +70,35 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const cartItems = user ? (firestoreCart || []) : localCart;
   
   const addToCart = useCallback(async (product: Product, quantity = 1) => {
-    const existingItem = cartItems.find(item => item.id === product.id);
+    const existingItem = cartItems.find(item => item.productId === product.id);
     const newQuantity = existingItem ? existingItem.quantity + quantity : quantity;
-    const cartItem: CartItem = { 
-      id: product.id, 
-      name: product.name, 
-      price: product.price, 
-      image: product.image, 
-      quantity: newQuantity
-    };
 
     if (user && firestore) {
+      const cartItem: CartItem = { 
+        id: product.id,
+        userId: user.uid,
+        productId: product.id,
+        name: product.name, 
+        price: product.price, 
+        image: product.image, 
+        quantity: newQuantity
+      };
       const docRef = doc(firestore, 'users', user.uid, 'cartItems', product.id);
       await setDoc(docRef, cartItem, { merge: true });
     } else {
+        const cartItem: CartItem = { 
+            id: product.id,
+            productId: product.id,
+            userId: 'guest', // or some other placeholder
+            name: product.name, 
+            price: product.price, 
+            image: product.image, 
+            quantity: newQuantity
+        };
       let updatedCart: CartItem[];
       if (existingItem) {
         updatedCart = localCart.map(item =>
-          item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item
+          item.productId === product.id ? { ...item, quantity: newQuantity } : item
         );
       } else {
         updatedCart = [...localCart, cartItem];
@@ -106,7 +118,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       const docRef = doc(firestore, 'users', user.uid, 'cartItems', productId);
       await deleteDoc(docRef);
     } else {
-      const updatedCart = localCart.filter(item => item.id !== productId);
+      const updatedCart = localCart.filter(item => item.productId !== productId);
       setLocalCart(updatedCart);
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedCart));
     }
@@ -129,7 +141,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       await setDoc(docRef, { quantity }, { merge: true });
     } else {
        const updatedCart = localCart.map(item =>
-          item.id === productId ? { ...item, quantity } : item
+          item.productId === productId ? { ...item, quantity } : item
         );
       setLocalCart(updatedCart);
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedCart));
