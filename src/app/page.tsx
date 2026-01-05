@@ -23,9 +23,6 @@ export default function Home() {
             <Button asChild size="lg">
               <Link href="#featured-products">Get Started</Link>
             </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link href="#featured-products">Start Trading</Link>
-            </Button>
           </div>
         </div>
       </section>
