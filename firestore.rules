@@ -1,0 +1,171 @@
+/**
+ * # Firestore Security Rules
+ *
+ * ## Core Philosophy
+ * This ruleset enforces a strict user-ownership model for all user-generated
+ * content. Access control is primarily determined by the document's path,
+ * ensuring that users can only interact with their own data. This approach is
+ * simple, secure, and highly performant.
+ *
+ * ## Data Structure
+ * The data is organized hierarchically. All private user data, including
+ * profiles, orders, and cart items, is nested within a top-level `/users/{userId}`
+ * collection. Publicly accessible data, like the product catalog, is stored in
+ * a separate top-level `/products` collection. This segregation simplifies rules
+ * and prevents accidental data exposure.
+ *
+ * ## Key Security Decisions
+ * - **User Privacy**: Listing all user profiles is strictly forbidden to protect user privacy.
+ * - **Path-Based Ownership**: The `{userId}` wildcard in the path is the single
+ *   source of truth for ownership. A user with UID 'abc' can only access documents
+ *   under the `/users/abc/` path.
+ * - **Public Data**: The `/products` collection is publicly readable by anyone,
+ *   including unauthenticated users, to support browsing the catalog. Writes to this
+ *   collection are disabled, as no admin role is defined.
+ * - **Default Secure**: Any path not explicitly defined is inaccessible. All write
+ *   operations require authentication and ownership verification.
+ *
+ * ## Denormalization for Authorization
+ * The security model relies on path-based authorization, which is a form of
+ * denormalization. The user's ID is embedded in the document path, eliminating
+ * the need for slow and costly `get()` calls to other documents to verify ownership.
+ * For example, an OrderItem's security is determined by the `/users/{userId}`
+ * part of its path, not by a field within the OrderItem document itself.
+ *
+ * ## Structural Segregation
+ * We use separate top-level collections for data with different security
+ * requirements. Private data lives in `/users` and public data in `/products`.
+ * This is more secure and performant than mixing public and private documents
+ * in the same collection, especially for list operations.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // -------------------------------------------------------------------------
+    // Helper Functions
+    // -------------------------------------------------------------------------
+
+    /**
+     * Returns true if the user is authenticated.
+     */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    /**
+     * Returns true if the authenticated user's UID matches the provided userId.
+     * This is the primary function for enforcing document ownership.
+     */
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    /**
+     * Returns true if the user is the owner AND the document already exists.
+     * Used to protect update and delete operations from acting on non-existent data.
+     */
+    function isExistingOwner(userId) {
+      return isOwner(userId) && resource != null;
+    }
+
+    // -------------------------------------------------------------------------
+    // User Profiles (/users/{userId})
+    // -------------------------------------------------------------------------
+
+    /**
+     * @description Users can create, read, update, and delete their own profile.
+     * @path        /users/{userId}
+     * @allow       A signed-in user with UID 'user_abc' can (create) their own document at `/users/user_abc`.
+     * @deny        A user with UID 'user_xyz' cannot (get) the document at `/users/user_abc`.
+     * @principle   Restricts access to a user's own data tree and enforces self-creation.
+     */
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if false; // Disallow listing all users for privacy.
+      allow create: if isOwner(userId) && request.resource.data.id == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    // -------------------------------------------------------------------------
+    // Products (/products/{productId})
+    // -------------------------------------------------------------------------
+
+    /**
+     * @description Product data is public for anyone to read but cannot be modified.
+     * @path        /products/{productId}
+     * @allow       Any user, even unauthenticated, can (get) or (list) all products.
+     * @deny        A signed-in user cannot (create), (update), or (delete) a product.
+     * @principle   Enables public read access for a catalog while securing it against modification.
+     */
+    match /products/{productId} {
+      allow get: if true;
+      allow list: if true;
+      // Writes are disallowed as there is no admin/editor role defined.
+      // This is the most secure default.
+      allow create: if false;
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    // -------------------------------------------------------------------------
+    // User Orders (/users/{userId}/orders/{orderId})
+    // -------------------------------------------------------------------------
+
+    /**
+     * @description Users can manage their own orders, but not the orders of others.
+     * @path        /users/{userId}/orders/{orderId}
+     * @allow       A user with UID 'user_abc' can (create) and (list) their own orders under `/users/user_abc/orders`.
+     * @deny        A user with UID 'user_xyz' cannot (get) an order at `/users/user_abc/orders/order_123`.
+     * @principle   Enforces document ownership for a user's private subcollection.
+     */
+    match /users/{userId}/orders/{orderId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    // -------------------------------------------------------------------------
+    // User Order Items (/users/{userId}/orders/{orderId}/orderItems/{orderItemId})
+    // -------------------------------------------------------------------------
+
+    /**
+     * @description Users can view items within their own orders.
+     * @path        /users/{userId}/orders/{orderId}/orderItems/{orderItemId}
+     * @allow       A user with UID 'user_abc' can (list) all items for their order at `/users/user_abc/orders/order_123/orderItems`.
+     * @deny        A user with UID 'user_xyz' cannot (get) an item at `/users/user_abc/orders/order_123/orderItems/item_456`.
+     * @principle   Inherits ownership from the parent path, ensuring data privacy in nested subcollections.
+     */
+    match /users/{userId}/orders/{orderId}/orderItems/{orderItemId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      // To create an item, the user must be the owner and the parent order document must exist.
+      allow create: if isOwner(userId) && request.resource.data.orderId == orderId && exists(/databases/$(database)/documents/users/$(userId)/orders/$(orderId));
+      allow update: if isExistingOwner(userId) && request.resource.data.orderId == resource.data.orderId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    // -------------------------------------------------------------------------
+    // User Cart Items (/users/{userId}/cartItems/{cartItemId})
+    // -------------------------------------------------------------------------
+
+    /**
+     * @description Users can manage their own shopping cart items.
+     * @path        /users/{userId}/cartItems/{cartItemId}
+     * @allow       A user with UID 'user_abc' can (create), (update), and (delete) items in their cart at `/users/user_abc/cartItems`.
+     * @deny        A user with UID 'user_xyz' cannot (list) items at `/users/user_abc/cartItems`.
+     * @principle   Enforces document ownership for a user's private subcollection.
+     */
+    match /users/{userId}/cartItems/{cartItemId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+  }
+}
