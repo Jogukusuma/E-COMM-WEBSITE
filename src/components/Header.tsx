@@ -32,6 +32,11 @@ export function Header() {
             SriComputers
           </span>
         </Link>
+        <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
+          <Link href="/products" className="text-foreground/60 transition-colors hover:text-foreground/80">
+            Products
+          </Link>
+        </nav>
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           <form
             onSubmit={handleSearch}

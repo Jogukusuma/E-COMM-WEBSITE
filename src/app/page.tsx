@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { ProductCard } from "@/components/ProductCard";
 import { products } from "@/lib/products";
 import Image from "next/image";
 import Link from "next/link";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { ProductCard } from "@/components/ProductCard";
 
 export default function Home() {
   const featuredProducts = products.slice(0, 4);
@@ -21,7 +21,7 @@ export default function Home() {
           </p>
           <div className="flex justify-center gap-4">
             <Button asChild size="lg">
-              <Link href="#featured-products">Get Started</Link>
+              <Link href="/products">Get Started</Link>
             </Button>
           </div>
         </div>
@@ -38,7 +38,7 @@ export default function Home() {
         </div>
         <div className="text-center mt-12">
            <Button asChild variant="outline">
-              <Link href="/#">View All Products</Link>
+              <Link href="/products">View All Products</Link>
             </Button>
         </div>
       </section>
