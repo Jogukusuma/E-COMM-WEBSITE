@@ -1,13 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { products } from "@/lib/products";
-import Image from "next/image";
 import Link from "next/link";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { ProductCard } from "@/components/ProductCard";
 
 export default function Home() {
-  const featuredProducts = products.slice(0, 4);
-
   return (
     <>
       <section className="relative h-[80vh] min-h-[600px] flex items-center justify-center text-center bg-background">
@@ -24,22 +18,6 @@ export default function Home() {
               <Link href="/products">Get Started</Link>
             </Button>
           </div>
-        </div>
-      </section>
-
-      <section id="featured-products" className="container mx-auto px-4 py-16">
-        <h2 className="mb-8 text-3xl font-bold tracking-tight text-center font-headline">
-          Featured Products
-        </h2>
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {featuredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-        <div className="text-center mt-12">
-           <Button asChild variant="outline">
-              <Link href="/products">View All Products</Link>
-            </Button>
         </div>
       </section>
     </>
