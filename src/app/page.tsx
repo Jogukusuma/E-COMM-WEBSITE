@@ -20,13 +20,13 @@ export default function Home() {
           data-ai-hint={heroImage?.imageHint || 'hexagon abstract'}
           priority
         />
-        <div className="absolute inset-0 bg-black/70 -z-10" />
+        <div className="absolute inset-0 bg-background/70 -z-10" />
         <div className="container mx-auto px-4">
-          <h1 className="mb-4 text-6xl md:text-8xl font-bold tracking-tight text-white drop-shadow-lg">
-            Sri Computers
+          <h1 className="mb-4 text-5xl md:text-7xl font-bold tracking-tight text-foreground drop-shadow-lg">
+            Find Your Next Rig
           </h1>
-          <p className="mb-8 text-lg md:text-xl text-neutral-300 max-w-3xl mx-auto drop-shadow-md">
-            Powering Your Passion. Building Your Dreams.
+          <p className="mb-8 text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto drop-shadow-md">
+            The best components for high-performance computing.
           </p>
           <Button asChild size="lg">
             <Link href="#featured-products">Explore Products</Link>
