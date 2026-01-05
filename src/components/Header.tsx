@@ -9,12 +9,15 @@ import { useRouter } from 'next/navigation'
 import React from 'react'
 import { Input } from './ui/input'
 import { Badge } from './ui/badge'
+import { useUser } from '@/firebase'
 import { useAuth } from '@/hooks/use-auth'
 
 export function Header() {
   const { cartCount } = useCart()
   const router = useRouter()
-  const { user, logout } = useAuth();
+  const { user: firebaseUser } = useUser();
+  const { logout } = useAuth();
+
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -56,7 +59,7 @@ export function Header() {
           </form>
           <nav className="flex items-center space-x-1">
             <ThemeToggle />
-            {user && (
+            {firebaseUser && (
               <Button variant="ghost" size="icon" asChild>
                 <Link href="/account">
                   <User className="h-5 w-5" />
@@ -78,7 +81,7 @@ export function Header() {
                 <span className="sr-only">Shopping Cart</span>
               </Link>
             </Button>
-            {user ? (
+            {firebaseUser ? (
               <Button variant="ghost" size="icon" onClick={logout}>
                 <LogOut className="h-5 w-5" />
                 <span className="sr-only">Logout</span>

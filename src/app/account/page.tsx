@@ -4,10 +4,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { useAuth } from "@/hooks/use-auth";
-import { useEffect } from "react";
+import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { doc } from "firebase/firestore";
+import type { User as AppUser } from "@/lib/types";
+import { useAuth } from "@/hooks/use-auth";
 
 const mockOrders = [
   {
@@ -34,22 +37,35 @@ const mockOrders = [
 ];
 
 export default function AccountPage() {
-  const { user, loading, logout } = useAuth();
+  const { user: firebaseUser, isUserLoading } = useUser();
+  const { logout } = useAuth();
+  const firestore = useFirestore();
   const router = useRouter();
 
+  const userDocRef = useMemoFirebase(() => {
+    if (!firestore || !firebaseUser) return null;
+    return doc(firestore, "users", firebaseUser.uid);
+  }, [firestore, firebaseUser]);
+
+  const { data: userProfile, isLoading: isProfileLoading } = useDoc<AppUser>(userDocRef);
+
   useEffect(() => {
-    if (!loading && !user) {
+    if (!isUserLoading && !firebaseUser) {
       router.push('/login');
     }
-  }, [user, loading, router]);
+  }, [firebaseUser, isUserLoading, router]);
 
-  if (loading || !user) {
+  const isLoading = isUserLoading || isProfileLoading;
+
+  if (isLoading || !firebaseUser) {
     return (
       <div className="container mx-auto px-4 py-8 text-center">
         <p>Loading...</p>
       </div>
     );
   }
+
+  const displayName = userProfile ? `${userProfile.firstName} ${userProfile.lastName}`.trim() : firebaseUser.displayName;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -66,11 +82,11 @@ export default function AccountPage() {
             <CardContent className="space-y-4">
               <div>
                 <p className="font-semibold">Name</p>
-                <p className="text-muted-foreground">{user.name || 'N/A'}</p>
+                <p className="text-muted-foreground">{displayName || 'N/A'}</p>
               </div>
               <div>
                 <p className="font-semibold">Email</p>
-                <p className="text-muted-foreground">{user.email}</p>
+                <p className="text-muted-foreground">{firebaseUser.email}</p>
               </div>
               <Separator />
                <p className="text-sm text-muted-foreground">This is your account page. Order history is mocked.</p>

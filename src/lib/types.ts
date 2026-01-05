@@ -19,8 +19,10 @@ export type CartItem = {
 
 export interface User {
   id: string;
-  email: string;
+  email: string | null;
   name?: string;
+  firstName?: string;
+  lastName?: string;
 }
 
 export interface AuthContextType {
@@ -28,5 +30,5 @@ export interface AuthContextType {
   loading: boolean;
   login: (email: string, password_DO_NOT_USE: string) => Promise<void>;
   signup: (email: string, password_DO_NOT_USE: string, name: string) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
 }
