@@ -11,14 +11,14 @@ export default function Home() {
     <>
       <section className="relative h-[60vh] min-h-[500px] flex items-center justify-center text-center text-white">
         <Image
-          src="https://storage.googleapis.com/project-spark-347416-cms-public/cms/9f9a463283e145f9a622ca5211b6d17b.png"
-          alt="Smart camera on a dramatic blue background with lightning"
+          src="https://storage.googleapis.com/project-spark-347416-cms-public/cms/02b28929e083403a958a0a8f8883d6a6.png"
+          alt="Serene clouds over mountains"
           fill
           className="object-cover -z-10"
-          data-ai-hint="smart camera"
+          data-ai-hint="clouds mountains"
           priority
         />
-        <div className="absolute inset-0 bg-black/60 -z-10" />
+        <div className="absolute inset-0 bg-black/30 -z-10" />
         <div className="container mx-auto px-4">
           <h1 className="mb-4 text-5xl md:text-7xl font-bold tracking-tight font-calligraphy text-primary-foreground drop-shadow-lg">
             Welcome to SriComputers
