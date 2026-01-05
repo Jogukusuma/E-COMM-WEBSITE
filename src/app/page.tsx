@@ -8,7 +8,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background -z-10" />
         <div className="container mx-auto px-4">
           <h1 className="mb-4 text-5xl md:text-7xl font-bold tracking-tight text-foreground drop-shadow-lg">
-            Secure & Intuitive Trading
+            SriComputers
           </h1>
           <p className="mb-8 text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto drop-shadow-md">
             The best components for high-performance computing.
