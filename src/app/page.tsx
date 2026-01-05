@@ -11,11 +11,11 @@ export default function Home() {
     <>
       <section className="relative h-[60vh] min-h-[500px] flex items-center justify-center text-center text-white">
         <Image
-          src="https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHx0ZWNoJTIwYmFja2dyb3VuZHxlbnwwfHx8fDE3NjgxNTg4OTF8MA&ixlib=rb-4.1.0&q=80&w=1080"
-          alt="Modern workspace"
+          src="https://storage.googleapis.com/project-spark-347416-cms-public/cms/9f9a463283e145f9a622ca5211b6d17b.png"
+          alt="Smart camera on a dramatic blue background with lightning"
           fill
           className="object-cover -z-10"
-          data-ai-hint="tech background"
+          data-ai-hint="smart camera"
           priority
         />
         <div className="absolute inset-0 bg-black/60 -z-10" />
