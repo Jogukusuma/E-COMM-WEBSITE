@@ -41,7 +41,7 @@ export default function Home() {
             Click. <span className="font-calligraphy italic">Shop.</span> Smile with SriComp.
           </p>
           <div className="flex justify-center gap-4">
-            <Button asChild size="lg">
+            <Button asChild size="lg" className="transition-transform hover:scale-105">
               <Link href="/products">Get Started</Link>
             </Button>
           </div>
