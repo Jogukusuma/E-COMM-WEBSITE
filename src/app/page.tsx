@@ -3,6 +3,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Laptop, Monitor, HardDrive, Keyboard, Dna } from "lucide-react";
 import Link from "next/link";
 import React from 'react';
+import Image from 'next/image';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const categories = [
   { name: 'Laptops', icon: <Laptop className="h-10 w-10 mx-auto mb-4" />, href: '/products?category=Laptops' },
@@ -13,10 +15,22 @@ const categories = [
 ];
 
 export default function Home() {
+  const heroImage = PlaceHolderImages.find(p => p.id === 'collaborative-night');
+  
   return (
     <>
       <section className="relative h-[80vh] min-h-[600px] flex items-center justify-center text-center bg-background">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/50 via-black to-purple-900/50 -z-10" />
+        {heroImage && (
+          <Image
+            src={heroImage.imageUrl}
+            alt={heroImage.description}
+            fill
+            className="object-cover -z-10"
+            quality={100}
+            data-ai-hint={heroImage.imageHint}
+          />
+        )}
+        <div className="absolute inset-0 bg-black/60 -z-10" />
         <div className="container mx-auto px-4">
           <h1 className="mb-4 text-5xl md:text-7xl font-bold tracking-tight text-foreground drop-shadow-lg">
             SriComputers
