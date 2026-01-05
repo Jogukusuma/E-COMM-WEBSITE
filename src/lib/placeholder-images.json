@@ -1,3 +1,76 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "galaxy-book-4-ultra",
+      "description": "Galaxy Book 4 Ultra Laptop",
+      "imageUrl": "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxsYXB0b3B8ZW58MHx8fHwxNzY3NTY3ODYwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "laptop"
+    },
+    {
+      "id": "zenbook-duo",
+      "description": "Zenbook Duo Laptop",
+      "imageUrl": "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxsYXB0b3B8ZW58MHx8fHwxNzY3NTY3ODYwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "laptop"
+    },
+    {
+      "id": "gaming-pc-pro",
+      "description": "Gaming PC Pro Desktop",
+      "imageUrl": "https://images.unsplash.com/photo-1587202372583-49330a15584d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxnYW1pbmclMjBjb21wdXRlcnxlbnwwfHx8fDE3Njc2MDYyNzB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "gaming computer"
+    },
+    {
+      "id": "office-master-5",
+      "description": "Office Master 5 Desktop",
+      "imageUrl": "https://images.unsplash.com/photo-1544006659-f0b21884ce1d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxvZmZpY2UlMjBjb21wdXRlcnxlbnwwfHx8fDE3Njc2MDYyNzB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "office computer"
+    },
+    {
+      "id": "geforce-rtx-4090",
+      "description": "GeForce RTX 4090 GPU",
+      "imageUrl": "https://images.unsplash.com/photo-1555618568-bdf0a992c512?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxncmFwaGljcyUyMGNhcmR8ZW58MHx8fHwxNzY3NTU4NTk1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "graphics card"
+    },
+    {
+      "id": "ryzen-9-9950x",
+      "description": "AMD Ryzen 9 9950X CPU",
+      "imageUrl": "https://images.unsplash.com/photo-1678435733095-6dccb4f1a5c8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxjb21wdXRlciUyMHByb2Nlc3NvcnxlbnwwfHx8fDE3Njc1NjA2ODF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "computer processor"
+    },
+    {
+      "id": "samsung-odyssey-g9",
+      "description": "Samsung Odyssey G9 Monitor",
+      "imageUrl": "https://images.unsplash.com/photo-1765266025917-5f9aecad5d56?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y3VydmVkJTIwbW9uaXRvcnxlbnwwfHx8fDE3Njc1NTI1NTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "curved monitor"
+    },
+    {
+      "id": "logitech-mx-master-3s",
+      "description": "Logitech MX Master 3S Mouse",
+      "imageUrl": "https://images.unsplash.com/photo-1629121291243-7b5e885cce9b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxjb21wdXRlciUyMG1vdXNlfGVufDB8fHx8MTc2NzUxMDc3MXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "computer mouse"
+    },
+    {
+      "id": "corsair-k100-keyboard",
+      "description": "Corsair K100 RGB Keyboard",
+      "imageUrl": "https://images.unsplash.com/photo-1600035919823-fb13e3a9f085?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxnYW1pbmclMjBrZXlib2FyZHxlbnwwfHx8fDE3Njc1MDY5MjV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "gaming keyboard"
+    },
+    {
+      "id": "wd-black-4tb-nvme",
+      "description": "WD Black 4TB NVMe SSD",
+      "imageUrl": "https://images.unsplash.com/photo-1724251280779-65a10faf1b6a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxzc2QlMjBkcml2ZXxlbnwwfHx8fDE3Njc1NTI1NTN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "ssd drive"
+    },
+    {
+      "id": "gskill-trident-z5-64gb",
+      "description": "G.Skill Trident Z5 64GB DDR5 RAM",
+      "imageUrl": "https://images.unsplash.com/photo-1584809922909-3911687d00cd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y29tcHV0ZXIlMjByYW18ZW58MHx8fHwxNzY3NTA0NzQ0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "computer ram"
+    },
+    {
+      "id": "macbook-pro-m4",
+      "description": "MacBook Pro M4",
+      "imageUrl": "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxhcHBsZSUyMGxhcHRvcHxlbnwwfHx8fDE3Njc2MDYyNzB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "apple laptop"
+    }
+  ]
 }
