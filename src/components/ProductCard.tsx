@@ -34,7 +34,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
   return (
     <Link href={`/product/${product.id}`} className="group block">
-      <Card className="flex h-full flex-col overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/20">
+      <Card className="flex h-full flex-col overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
         <CardHeader className="p-0">
           <div className="relative h-48 w-full overflow-hidden">
             <Image
