@@ -12,7 +12,7 @@ export default {
       fontFamily: {
         body: ['Poppins', 'sans-serif'],
         headline: ['Poppins', 'sans-serif'],
-        calligraphy: ['"Dancing Script"', 'cursive'],
+        calligraphy: ['Lora', 'serif'],
         code: ['monospace'],
       },
       colors: {
