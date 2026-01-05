@@ -1,5 +1,2 @@
-# Firebase Studio
+"Built with love with the help of CipherSchools"
 
-This is a NextJS starter in Firebase Studio.
-
-To get started, take a look at src/app/page.tsx.
