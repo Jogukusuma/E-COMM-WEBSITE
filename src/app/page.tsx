@@ -16,7 +16,7 @@ export default function Home() {
   return (
     <>
       <section className="relative h-[80vh] min-h-[600px] flex items-center justify-center text-center bg-background">
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background -z-10" />
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/50 via-black to-purple-900/50 -z-10" />
         <div className="container mx-auto px-4">
           <h1 className="mb-4 text-5xl md:text-7xl font-bold tracking-tight text-foreground drop-shadow-lg">
             SriComputers
