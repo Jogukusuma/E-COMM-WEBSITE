@@ -14,3 +14,19 @@ export type CartItem = {
   image: string;
   quantity: number;
 };
+
+// --- Auth Types ---
+
+export interface User {
+  id: string;
+  email: string;
+  name?: string;
+}
+
+export interface AuthContextType {
+  user: User | null;
+  loading: boolean;
+  login: (email: string, password_DO_NOT_USE: string) => Promise<void>;
+  signup: (email: string, password_DO_NOT_USE: string, name: string) => Promise<void>;
+  logout: () => void;
+}

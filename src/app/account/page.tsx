@@ -1,7 +1,13 @@
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/hooks/use-auth";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 const mockOrders = [
   {
@@ -28,9 +34,29 @@ const mockOrders = [
 ];
 
 export default function AccountPage() {
+  const { user, loading, logout } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/login');
+    }
+  }, [user, loading, router]);
+
+  if (loading || !user) {
+    return (
+      <div className="container mx-auto px-4 py-8 text-center">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8 font-headline">My Account</h1>
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold font-headline">My Account</h1>
+        <Button variant="outline" onClick={logout}>Logout</Button>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="md:col-span-1">
           <Card>
@@ -40,14 +66,14 @@ export default function AccountPage() {
             <CardContent className="space-y-4">
               <div>
                 <p className="font-semibold">Name</p>
-                <p className="text-muted-foreground">Demo User</p>
+                <p className="text-muted-foreground">{user.name || 'N/A'}</p>
               </div>
               <div>
                 <p className="font-semibold">Email</p>
-                <p className="text-muted-foreground">demo.user@example.com</p>
+                <p className="text-muted-foreground">{user.email}</p>
               </div>
               <Separator />
-              <p className="text-sm text-muted-foreground">This is a mock account page. Login functionality is not implemented.</p>
+               <p className="text-sm text-muted-foreground">This is your account page. Order history is mocked.</p>
             </CardContent>
           </Card>
         </div>
